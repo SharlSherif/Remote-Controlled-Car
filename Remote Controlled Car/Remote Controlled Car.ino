@@ -18,6 +18,7 @@ const int motorPin2 = 10;  // Pin 10 of L293
 const int motorPin3 = 6; // Pin  7 of L293
 const int motorPin4 = 5;  // Pin  2 of L293
 
+const int motorSpeed = 240;
 String previousCode = "";
 //This will run only one time.
 void setup() {
@@ -42,12 +43,10 @@ void loop() {
 
 		if (code == "LEFT")
 		{
-			MoveForward();
 			MoveLeft();
 		}
 
 		if (code == "RIGHT") {
-			MoveForward();
 			MoveRight();
 		}
 
@@ -59,10 +58,12 @@ void loop() {
 			MoveBackwards();
 		}
 		RecordCodeValue(code);
-		delay(1000);
-		Stop();
 		Serial.println(code);
 		irrecv.resume();
+	}
+	else {
+		delay(150);
+		Stop();
 	}
 
 }
@@ -80,31 +81,33 @@ void Stop() {
 }
 
 void MoveRight() {
-	analogWrite(motorPin1, 180);
+	analogWrite(motorPin1, motorSpeed);
 	analogWrite(motorPin2, 0);
+
 	analogWrite(motorPin3, 0);
-	analogWrite(motorPin4, 0);
+	analogWrite(motorPin4, motorSpeed);
 }
 
 void MoveForward() {
-	analogWrite(motorPin1, 180);
+	analogWrite(motorPin1, motorSpeed);
 	analogWrite(motorPin2, 0);
-	analogWrite(motorPin3, 180);
+	analogWrite(motorPin3, motorSpeed);
 	analogWrite(motorPin4, 0);
 }
 
 void MoveLeft() {
 	analogWrite(motorPin1, 0);
-	analogWrite(motorPin2, 0);
-	analogWrite(motorPin3, 180);
+	analogWrite(motorPin2, motorSpeed);
+
+	analogWrite(motorPin3, motorSpeed);
 	analogWrite(motorPin4, 0);
 }
 
 void MoveBackwards() {
 	analogWrite(motorPin1, 0);
-	analogWrite(motorPin2, 180);
+	analogWrite(motorPin2, motorSpeed);
 	analogWrite(motorPin3, 0);
-	analogWrite(motorPin4, 180);
+	analogWrite(motorPin4, motorSpeed);
 }
 
 String translateIR()
